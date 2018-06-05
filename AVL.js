@@ -1,5 +1,7 @@
 'use strict';
 
+//AVL tree
+
 function Node(key, data, depth) {
     this.init(key, data, depth);
 };
