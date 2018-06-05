@@ -264,17 +264,12 @@ let root;
 createTree(7,"seven");
 add(5, "five");
 add(4, "four");
-add(8, "six");
+add(6, "six");
 
 console.log(root);
+find(4);
 heightOfTree();
-console.log(isBalanced(root));
-del(8);
-//rightRotate(root);
-console.log(root);
-//heightOfTree();
-
-//console.log(findDisbalance(root));
+del(6);
 console.log(isBalanced(root));
 
 
