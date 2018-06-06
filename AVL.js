@@ -20,20 +20,20 @@ function createTree(key, data) {
 };
 
 function addHelper(key, data, node, depth) {    //Рекурсивная функция, используется в add
-    if(key > node.key && node.right) {    //Переходим в правое поддерево 
+    if (key > node.key && node.right) {    //Переходим в правое поддерево 
         depth++;
     	addHelper(key, data, node.right, depth);
     }
-    else if(key < node.key && node.left) {    //Переходим в левое поддерево
+    else if (key < node.key && node.left) {    //Переходим в левое поддерево
     	depth++;
     	addHelper(key, data, node.left, depth);
     }
-    else if(key > node.key) {
+    else if (key > node.key) {
         depth++;
     	node.right = new Node(key, data, depth); 
         node.right.parent = node;
     }
-    else if(key < node.key) {
+    else if (key < node.key) {
         depth++;
     	node.left = new Node(key, data, depth);
         node.left.parent = node;
@@ -49,13 +49,13 @@ function add(key, data) {
 };
 
 function findHelper(key, node) {    //Рекурсивная функция, используется в find
-    if(key == node.key) {
+    if (key == node.key) {
         console.log("Data: " + node.data);
     }
-    else if(key > node.key && node.right) {    //Переходим в правое поддерево 
+    else if (key > node.key && node.right) {    //Переходим в правое поддерево 
     	findHelper(key, node.right);
     }
-    else if(key < node.key && node.left) {    //Переходим в левое поддерево
+    else if (key < node.key && node.left) {    //Переходим в левое поддерево
     	findHelper(key, node.left);
     }
     else {
@@ -68,11 +68,11 @@ function find(key) {
 };
 
 function delLeaf(node) {
-    if(node.parent) {    
-        if(node.parent.left == node) {
+    if (node.parent) {    
+        if (node.parent.left == node) {
             node.parent.left = null;    //Удаляем у отца ссылку на этот узел
         }
-        else if(node.parent.right == node) {
+        else if (node.parent.right == node) {
             node.parent.right = null;   //Удаляем у отца ссылку на этот узел
         }
     }
@@ -83,29 +83,29 @@ function delLeaf(node) {
 
 function delNode(node) {
     let temp = node;    //Узел который заменит node
-    if(node.left) {
+    if (node.left) {
         temp = node.left;
         let flag = true;
-        while(temp.right) {
+        while (temp.right) {
             temp = temp.right;
             flag = false;    //Проверка, есть ли правый сын
         }
-        if(flag) {
+        if (flag) {
             node.left = temp.left;
         }
     }
-    else if(node.right) {
+    else if (node.right) {
         temp = node.right;
         let flag = true;
-        while(temp.left){
+        while (temp.left){
             temp = temp.left;
             flag = false;    //Проверка, есть ли левый сын
         }
-        if(flag) {
+        if (flag) {
             node.right = temp.right;
         }
     }
-    else{    //Если нет сыновей, то это листок
+    else {    //Если нет сыновей, то это листок
         delLeaf(node);
     }
     node.key = temp.key;
@@ -114,13 +114,13 @@ function delNode(node) {
 };
 
 function delHelper(key, node) {
-    if(key == node.key) {
+    if (key == node.key) {
         delNode(node);
     }
-    else if(key > node.key && node.right) {    //Переходим в правое поддерево 
+    else if (key > node.key && node.right) {    //Переходим в правое поддерево 
     	delHelper(key, node.right);
     }
-    else if(key < node.key && node.left) {    //Переходим в левое поддерево
+    else if (key < node.key && node.left) {    //Переходим в левое поддерево
     	delHelper(key, node.left);
     }
     else {
@@ -135,9 +135,11 @@ function del(key) {
 
 function maxHeight(node, height, startNode) {
     let distance = node.depth - startNode.depth + 1;
-    height < distance ? height = distance : true;    //Высота равна максимальной глубине поддерева 
-    height =  (node.right) ? maxHeight(node.right, height, startNode) : height;
-    height =  (node.left) ? maxHeight(node.left, height, startNode) : height ;
+    height = (height < distance) ?  distance : height;    //Высота равна максимальной глубине поддерева 
+    height =  (node.right) ? 
+        maxHeight(node.right, height, startNode) : height;
+    height =  (node.left) ? 
+        maxHeight(node.left, height, startNode) : height;
     return height;
 };
 
@@ -151,29 +153,29 @@ function heightOfTree() {
 
 function depthDown(node) {
     node.depth--;
-    node.left ? heightDown(node.left) : true;
-    node.right ? heightDown(node.right) : true;
+    if (node.left) heightDown(node.left);
+    if (node.right) heightDown(node.right);
 }
 
 function depthUp(node) {
     node.depth++;
-    node.left ? heightDown(node.left) : true;
-    node.right ? heightDown(node.right) : true;
+    if (node.left) heightDown(node.left);
+    if (node.right) heightDown(node.right);
 }
 
 function isBalanced(node) {
     let flag = true; 
-    if(node){
+    if (node){
         let Rheight = node.right ? height(node.right) : 0;
         let Lheight = node.left ? height(node.left) : 0;
         let difference = Math.abs(Rheight - Lheight);
-        if(node.right) {    //Переходим в правое поддерево 
+        if (node.right) {    //Переходим в правое поддерево 
     	    flag = isBalanced(node.right);
         }
-        else if(node.left) {    //Переходим в левое поддерево
+        else if (node.left) {    //Переходим в левое поддерево
     	    flag = isBalanced(node.left);
         }
-        if(difference > 1) {
+        if (difference > 1) {
     	    flag = false;
         }
     }
@@ -186,14 +188,14 @@ function isBalancedTree() {
 
 function findDisbalance(node) {
     let temp = node;
-    if(!isBalanced(node)) {
+    if (!isBalanced(node)) {
         let left = node.left;
         let right = node.right;
         
-        if(!isBalanced(left)) {
+        if (!isBalanced(left)) {
             temp = findDisbalance(left);
         }
-        else if(!isBalanced(right)) {
+        else if (!isBalanced(right)) {
             temp = findDisbalance(right)
         }
     }
@@ -204,13 +206,13 @@ function rightRotate(node) {
     let temp = node.left;
     temp.parent = node.parent;
     node.left = temp.right;
-    if(!node.parent) {
+    if (!node.parent) {
         root = temp;
     }
-    else if(node.parent.left == node) {
+    else if (node.parent.left == node) {
         node.parent.left = temp;
     }
-    else if(node.parent.right == node) {
+    else if (node.parent.right == node) {
         node.parent.right = temp;
     }
     node.parent = temp;
@@ -225,13 +227,13 @@ function leftRotate(node) {
     let temp = node.right;
     temp.parent = node.parent;
     node.right = temp.left;
-    if(!node.parent) {
+    if (!node.parent) {
         root = temp;
     }
-    else if(node.parent.left == node) {
+    else if (node.parent.left == node) {
         node.parent.left = temp;
     }
-    else if(node.parent.right == node) {
+    else if (node.parent.right == node) {
         node.parent.right = temp;
     }
     node.parent = temp;
@@ -246,10 +248,10 @@ function nodeBalance(node) {
    let Rheight = node.right ? height(node.right) : 0;
    let Lheight = node.left ? height(node.left) : 0;
    let difference = Rheight - Lheight;
-   if(difference > 0) {
+   if (difference > 0) {
        leftRotate(node);
    }
-   else if(difference < 0) {
+   else if (difference < 0) {
        rightRotate(node);
    }
 };
